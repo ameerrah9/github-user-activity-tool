@@ -69,6 +69,15 @@ if __name__ == "__main__":
     username = sys.argv[1]
     print(f"Fetching recent activity for GitHub user: {username}")
     activity_data = fetch_github_activity(username)
-    activities = display_activity(activity_data)
-    for activity in activities:
-        print(activity)
+
+    try:
+        activities = display_activity(activity_data)
+    except KeyError as e:
+        print(f"Unexpected data format: missing key {e}")
+        sys.exit(1)
+
+    if not activities:
+        print("No activity found.")
+    else:
+        for activity in activities:
+            print(activity)
